@@ -1,6 +1,7 @@
 import { exec } from 'child-process-promise'
 import * as path from 'path'
 import * as fs from 'fs'
+import { runCommand } from './runCommand'
 
 export async function overrideWithBoosterLocalDependencies(projectPath: string): Promise<void> {
   const projectRelativePath = path.relative(__dirname, projectPath)
@@ -32,4 +33,8 @@ export async function overrideWithBoosterLocalDependencies(projectPath: string):
 
 export async function forceLernaRebuild(): Promise<void> {
   await exec('lerna clean --yes && lerna bootstrap && lerna run clean && lerna run compile')
+}
+
+export async function installBoosterPackage(packageName: string): Promise<void> {
+  await runCommand(path.join('..', packageName), 'npx yarn global add file:$PWD')
 }

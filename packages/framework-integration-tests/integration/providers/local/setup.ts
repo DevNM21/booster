@@ -2,7 +2,8 @@ import { start } from './utils'
 import { sleep } from '../../helper/sleep'
 import { ChildProcess } from 'child_process'
 import { createSandboxProject, removeFolders } from '../../helper/fileHelper'
-import { overrideWithBoosterLocalDependencies } from '../../helper/depsHelper'
+import { overrideWithBoosterLocalDependencies, installBoosterPackage } from '../../helper/depsHelper'
+
 import { sandboxName } from './constants'
 import { runCommand } from '../../helper/runCommand'
 
@@ -10,8 +11,11 @@ let serverProcess: ChildProcess
 let sandboxPath: string
 
 before(async () => {
+  console.log('Installing the infrastructure package in the global scope')
+  await installBoosterPackage('framework-provider-local-infrastructure')
+
   console.log('preparing sandboxed project...')
-  sandboxPath = createSandboxProject(sandboxName)
+  sandboxPath = await createSandboxProject(sandboxName)
 
   console.log('installing dependencies...')
   await runCommand(sandboxPath, 'npm install')
