@@ -9,7 +9,7 @@ import {
   copyFileSync,
 } from 'fs'
 import * as path from 'path'
-import { symLinkBoosterDependencies } from './depsHelper'
+import { overrideWithBoosterLocalDependencies } from './depsHelper'
 
 export const loadFixture = (fixturePath: string, replacements?: Array<Array<string>>): string => {
   const template = readFileContent(`integration/fixtures/${fixturePath}`)
@@ -72,10 +72,10 @@ export const createSandboxProject = async (sandboxName: string): Promise<string>
   const projectFiles = ['.eslintignore', 'package.json', 'tsconfig.eslint.json', 'tsconfig.json']
   projectFiles.forEach((file: string) => copyFileSync(file, path.join(sandboxPath, file)))
 
-  copyFileSync(path.join('..', '..', 'yarn.lock'), path.join(sandboxPath, 'yarn.lock'))
+  copyFileSync(path.join('..', '..', 'package-lock.json'), path.join(sandboxPath, 'package-lock.json'))
 
   // Make sure all booster dependencies come from the versions under development
-  await symLinkBoosterDependencies(sandboxPath)
+  await overrideWithBoosterLocalDependencies(sandboxPath)
 
   return sandboxPath
 }

@@ -39,7 +39,7 @@ function loadInfrastructure(config: BoosterConfig): ProviderInfrastructure {
   //   getInstalledPathSync(infrastructurePackageName)
   // } catch (e) {
   //   throw new Error(
-  //     `The AWS infrastructure package must be installed to perform this operation, please install it globally running 'yarn global add ${infrastructurePackageName}'`
+  //     `The AWS infrastructure package must be installed to perform this operation, please install it globally running 'npm install -g ${infrastructurePackageName}'`
   //   )
   // }
   return dynamicLoad(packageDescription.name + '-infrastructure').Infrastructure(config.rockets)
